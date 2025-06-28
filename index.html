@@ -2,89 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>kuro 28.06.25 beta</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body, html {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Comfortaa', cursive;
       height: 100%;
       overflow: hidden;
       background-color: #0f0f0f;
     }
-
     .video-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100vw;
-      min-height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       object-fit: cover;
-      z-index: -2;
+      z-index: 0;
     }
-
-    .blur-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      backdrop-filter: blur(10px);
-      background-color: rgba(0, 0, 0, 0.5);
-      transition: opacity 1s ease;
-      z-index: 3;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .enter-text {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      z-index: 4;
-      transition: opacity 1s ease;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    /* Card frosted glass */
     .card {
-      position: absolute;
-      top: 50%;
-      left: 50%;
+      position: fixed;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(15, 15, 15, 0.4);
-      backdrop-filter: blur(25px) saturate(160%);
-      -webkit-backdrop-filter: blur(25px) saturate(160%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-radius: 2rem;
       padding: 3rem;
+      width: 320px;
+      max-width: 90vw;
       text-align: center;
       color: white;
-      z-index: 0;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .fade-out {
-      opacity: 0 !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 6;
+      user-select: none;
       transition: opacity 1s ease;
-      pointer-events: none !important;
     }
-
     .logo-img {
-      width: 128px;
-      height: 128px;
+      width: 128px; height: 128px;
       border-radius: 128px;
-      margin: 0 auto 1rem auto;
+      margin: 0 auto 1rem;
+      display: block;
     }
-
     .invite-button {
       background-color: black;
       color: white;
@@ -93,42 +55,64 @@
       font-weight: bold;
       transition: transform 0.2s ease, background-color 0.2s ease;
       display: inline-block;
+      text-decoration: none;
     }
-
     .invite-button:hover {
       background-color: #1a1a1a;
       transform: scale(1.05);
     }
+    /* Enter text overlay with blur */
+    .enter-text {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      z-index: 10;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255, 255, 255, 0.1); /* light transparent for blur to work */
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      transition: opacity 1s ease;
+      pointer-events: auto;
+    }
+    /* fade out */
+    .fade-out {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   </style>
 </head>
-<body onclick="enterSite()">
+<body>
 
   <video autoplay muted loop class="video-bg" id="bgVideo">
-    <source src="https://kurobot.ix.tc/bg.mp4" type="video/mp4">
+    <source src="https://kurobot.ix.tc/bg.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <div class="blur-overlay" id="blur"></div>
-
-  <div class="enter-text" id="enterText">
-    Click to Enter
-  </div>
-
-  <div class="card">
-    <img src="https://i.pinimg.com/736x/a9/92/6e/a9926e40fd86892bafc46241486d461c.jpg" alt="Logo" class="logo-img">
+  <div class="card" id="card">
+    <img src="https://i.pinimg.com/736x/a9/92/6e/a9926e40fd86892bafc46241486d461c.jpg" alt="Logo" class="logo-img" />
     <h1 class="text-4xl font-bold mb-2">Kuro</h1>
     <p class="mb-6">A discord bot with just the basics</p>
-    <a href="#" class="invite-button">Invite</a>
+    <a href="https://" class="invite-button">Invite</a>
   </div>
 
+  <div class="enter-text" id="enterText" onclick="enterSite()">Click to Enter</div>
+
   <audio id="bgMusic" loop>
-    <source src="https://kurobot.ix.tc/uwa.mp3" type="audio/mp3">
+    <source src="https://kurobot.ix.tc/uwa.mp3" type="audio/mp3" />
   </audio>
 
   <script>
     function enterSite() {
-      document.getElementById('blur').classList.add('fade-out');
-      document.getElementById('enterText').classList.add('fade-out');
+      const enterText = document.getElementById('enterText');
+      enterText.classList.add('fade-out');
       const music = document.getElementById('bgMusic');
       music.volume = 0.5;
       music.play();
